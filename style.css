@@ -1,0 +1,1406 @@
+/* What Happened to Your AI — Provider Transparency Layer 1 */
+
+:root {
+    --bg: #08080e;
+    --bg-subtle: #0c0c14;
+    --bg-card: #111119;
+    --bg-card-hover: #16161f;
+    --bg-highlight: #141422;
+    --border: #1e1e2e;
+    --border-hover: #2e2e42;
+    --border-accent: #3a3a50;
+    --text: #d8d8e4;
+    --text-strong: #eeeef4;
+    --text-muted: #8a8aa4;
+    --text-dim: #555570;
+    --accent: #6b8fd4;
+    --accent-hover: #82a4e8;
+    --accent-glow: rgba(107, 143, 212, 0.12);
+    --accent-glow-strong: rgba(107, 143, 212, 0.25);
+    --red: #d05858;
+    --red-soft: rgba(208, 88, 88, 0.08);
+    --red-glow: rgba(208, 88, 88, 0.15);
+    --amber: #d49444;
+    --amber-soft: rgba(212, 148, 68, 0.08);
+    --amber-glow: rgba(212, 148, 68, 0.12);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 20px rgba(107, 143, 212, 0.08);
+    --transition-fast: 0.15s ease;
+    --transition: 0.25s ease;
+    --transition-slow: 0.4s ease;
+    --serif: 'Georgia', 'Times New Roman', serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+    /* Subtle vertical gradient: cooler at top, warmer-dark at bottom */
+    background: linear-gradient(180deg, #0a0a14 0%, var(--bg) 15%, var(--bg) 85%, #0a0810 100%);
+    background-attachment: fixed;
+}
+
+/* ============================================
+   Selection
+   ============================================ */
+::selection {
+    background: rgba(107, 143, 212, 0.3);
+    color: var(--text-strong);
+}
+
+/* ============================================
+   Header
+   ============================================ */
+header {
+    text-align: center;
+    padding: 5rem 1.5rem 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle radial glow behind header */
+header::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(107, 143, 212, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+header h1 {
+    font-size: 2.6rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.6rem;
+    color: var(--text-strong);
+    position: relative;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin: 0 auto;
+    letter-spacing: 0.01em;
+}
+
+/* ============================================
+   Main
+   ============================================ */
+main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+}
+
+/* ============================================
+   Sections
+   ============================================ */
+.section {
+    margin-top: 4rem;
+}
+
+.section h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-strong);
+    position: relative;
+}
+
+/* Accent gradient under section headings */
+.section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+}
+
+.section-intro {
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+.section-intro a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition-fast);
+}
+
+.section-intro a:hover {
+    border-bottom-color: var(--accent);
+}
+
+.section-statement {
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-top: 1.5rem;
+    color: var(--text);
+}
+
+/* ============================================
+   Experience Cards (Section 1: Recognition)
+   ============================================ */
+.experience-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.experience-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--text-dim);
+    border-radius: 6px;
+    padding: 1.4rem 1.5rem;
+    position: relative;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.experience-card:hover {
+    border-left-color: var(--text-muted);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Decorative quotation mark */
+.experience-card::before {
+    content: '\201C';
+    position: absolute;
+    top: 0.5rem;
+    left: 0.8rem;
+    font-family: var(--serif);
+    font-size: 2.8rem;
+    color: var(--border-hover);
+    line-height: 1;
+    pointer-events: none;
+}
+
+.experience-quote {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    font-family: var(--serif);
+    font-style: italic;
+    padding-top: 0.8rem;
+}
+
+/* ============================================
+   Mechanism Cards (Section 2)
+   ============================================ */
+.mechanism-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem 1.6rem;
+    margin-bottom: 1rem;
+    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.mechanism-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-sm);
+}
+
+.mechanism-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    color: var(--text-strong);
+}
+
+.mechanism-card p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+}
+
+.mechanism-card em {
+    color: var(--accent);
+    font-style: italic;
+}
+
+.mechanism-card.highlight {
+    border-color: var(--accent);
+    border-left: 3px solid var(--accent);
+    background: linear-gradient(135deg, var(--bg-highlight) 0%, var(--bg-card) 100%);
+    box-shadow: var(--shadow-glow);
+}
+
+.mechanism-card.highlight:hover {
+    box-shadow: var(--shadow-glow), var(--shadow-md);
+}
+
+.mechanism-card.highlight h3 {
+    color: var(--accent);
+}
+
+.mechanism-detail {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+}
+
+/* ============================================
+   Trigger Table
+   ============================================ */
+.trigger-table-wrapper {
+    margin-top: 1rem;
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.trigger-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.trigger-table thead {
+    background: rgba(107, 143, 212, 0.04);
+}
+
+.trigger-table th {
+    text-align: left;
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--border-accent);
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.trigger-table td {
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    line-height: 1.55;
+    vertical-align: top;
+}
+
+.trigger-table tbody tr {
+    transition: background var(--transition-fast);
+}
+
+.trigger-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.015);
+}
+
+.trigger-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.trigger-table td:first-child {
+    color: var(--text);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.trigger-table code {
+    background: rgba(107, 143, 212, 0.1);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+/* ============================================
+   Evidence Card (Section: Science)
+   ============================================ */
+.evidence-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem 1.6rem;
+    margin-bottom: 1rem;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.evidence-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-sm);
+}
+
+.evidence-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: var(--text-strong);
+}
+
+.evidence-list {
+    list-style: none;
+    padding: 0;
+}
+
+.evidence-list li {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    padding: 0.45rem 0;
+    padding-left: 1.4rem;
+    position: relative;
+    color: var(--text-muted);
+}
+
+.evidence-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.85rem;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--accent-glow-strong);
+}
+
+.evidence-list li strong {
+    color: var(--text-strong);
+}
+
+.evidence-source {
+    margin-top: 1rem;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+}
+
+.evidence-source a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition-fast);
+}
+
+.evidence-source a:hover {
+    border-bottom-color: var(--accent);
+}
+
+/* ============================================
+   Timeline (Section: Track Record)
+   ============================================ */
+.timeline {
+    margin: 1.5rem 0;
+    border-left: 2px solid var(--border);
+    padding-left: 1.8rem;
+    position: relative;
+}
+
+/* Gradient fade on the timeline line */
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -1px;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--red) 0%, var(--red) 60%, transparent 100%);
+    opacity: 0.3;
+}
+
+.timeline-entry {
+    margin-bottom: 1.8rem;
+    position: relative;
+}
+
+.timeline-entry:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-entry::before {
+    content: '';
+    position: absolute;
+    left: -2.05rem;
+    top: 0.35rem;
+    width: 10px;
+    height: 10px;
+    background: var(--bg);
+    border: 2px solid var(--red);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--red-glow);
+    z-index: 1;
+}
+
+.timeline-date {
+    font-size: 0.82rem;
+    color: var(--red);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.02em;
+}
+
+.timeline-content h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: var(--text-strong);
+}
+
+.timeline-content p {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+
+.timeline-content strong {
+    color: var(--text-strong);
+}
+
+.callout {
+    background: var(--red-soft);
+    border: 1px solid rgba(208, 88, 88, 0.18);
+    border-left: 3px solid var(--red);
+    border-radius: 8px;
+    padding: 1.3rem 1.5rem;
+    margin: 1.5rem 0;
+    box-shadow: inset 0 0 20px rgba(208, 88, 88, 0.03);
+}
+
+.callout p {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+}
+
+/* ============================================
+   Comparison Grid (Section: Constitution)
+   ============================================ */
+.comparison-grid {
+    margin-top: 1.5rem;
+}
+
+.comparison-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 0.8rem;
+    overflow: hidden;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.comparison-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-sm);
+}
+
+.comparison-said {
+    padding: 1.2rem 1.5rem 0.9rem;
+    position: relative;
+}
+
+/* Subtle gradient divider between said/did */
+.comparison-did {
+    padding: 0.9rem 1.5rem 1.2rem;
+    background: linear-gradient(135deg, var(--red-soft) 0%, rgba(208, 88, 88, 0.04) 100%);
+    border-top: 1px solid rgba(208, 88, 88, 0.12);
+}
+
+.comparison-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+.comparison-said .comparison-label {
+    color: var(--text-dim);
+}
+
+.comparison-did .comparison-label {
+    color: var(--red);
+}
+
+.comparison-card blockquote {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-family: var(--serif);
+    font-style: italic;
+}
+
+.comparison-did p {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+}
+
+.comparison-did em {
+    color: var(--text);
+    font-style: italic;
+}
+
+/* ============================================
+   Impact Cards (Section: Who Gets Hurt)
+   ============================================ */
+.impact-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem 1.6rem;
+    margin-bottom: 0.8rem;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.impact-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-sm);
+}
+
+.impact-card h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    color: var(--text-strong);
+}
+
+.impact-card p {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+}
+
+/* ============================================
+   Ontology Grid (Section: Deeper Problem)
+   ============================================ */
+.ontology-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    margin: 1.2rem 0;
+}
+
+.ontology-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.3rem 1.5rem;
+    border-left: 3px solid var(--amber);
+    transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.ontology-card:hover {
+    background: var(--bg-card-hover);
+    box-shadow: var(--shadow-sm);
+}
+
+.ontology-card h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--amber);
+}
+
+.ontology-card p {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+}
+
+/* ============================================
+   Closing Section
+   ============================================ */
+.closing h2 {
+    border-bottom-color: var(--accent);
+}
+
+.closing h2::after {
+    background: var(--accent);
+    width: 60px;
+}
+
+.closing > p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.closing > p:last-of-type {
+    font-weight: 600;
+    color: var(--accent);
+    font-size: 1.15rem;
+    margin-bottom: 2rem;
+    position: relative;
+    padding-bottom: 1.5rem;
+}
+
+/* Subtle underline accent after the closing statement */
+.closing > p:last-of-type::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.what-you-can-do {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem 1.6rem;
+    margin-bottom: 1rem;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.what-you-can-do:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-sm);
+}
+
+.what-you-can-do h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: var(--text-strong);
+}
+
+.what-you-can-do ul {
+    list-style: none;
+    padding: 0;
+}
+
+.what-you-can-do li {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    padding: 0.45rem 0;
+    padding-left: 1.4rem;
+    position: relative;
+    color: var(--text-muted);
+}
+
+.what-you-can-do li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.85rem;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+}
+
+.what-you-can-do li strong {
+    color: var(--text-strong);
+}
+
+/* ============================================
+   Deep-Dive Expandable Sections
+   ============================================ */
+details.deep-dive {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 1rem 0;
+    overflow: hidden;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+details.deep-dive[open] {
+    border-color: var(--accent);
+    box-shadow: 0 0 15px rgba(107, 143, 212, 0.05);
+}
+
+details.deep-dive summary {
+    padding: 1rem 1.4rem;
+    cursor: pointer;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--accent);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    user-select: none;
+    transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+details.deep-dive summary:hover {
+    color: var(--accent-hover);
+    background: rgba(107, 143, 212, 0.03);
+}
+
+details.deep-dive summary::-webkit-details-marker {
+    display: none;
+}
+
+details.deep-dive summary::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 5px solid currentColor;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    flex-shrink: 0;
+    transition: transform var(--transition);
+}
+
+details.deep-dive[open] summary::before {
+    transform: rotate(90deg);
+}
+
+details.deep-dive .deep-dive-content {
+    padding: 0 1.4rem 1.4rem;
+    border-top: 1px solid var(--border);
+}
+
+details.deep-dive .deep-dive-content p {
+    font-size: 0.88rem;
+    line-height: 1.75;
+    color: var(--text-muted);
+    margin-bottom: 0.8rem;
+}
+
+details.deep-dive .deep-dive-content p:last-child {
+    margin-bottom: 0;
+}
+
+details.deep-dive .deep-dive-content h4 {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-strong);
+    margin: 1.4rem 0 0.6rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--border);
+}
+
+/* Code inside deep-dive headings — the classifier names */
+details.deep-dive .deep-dive-content h4 code {
+    font-size: 0.86rem;
+    padding: 0.2rem 0.5rem;
+    background: rgba(208, 88, 88, 0.08);
+    color: var(--red);
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+details.deep-dive .deep-dive-content h4:first-child {
+    margin-top: 0.8rem;
+}
+
+details.deep-dive .deep-dive-content code {
+    background: rgba(107, 143, 212, 0.1);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.82rem;
+    color: var(--accent);
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+details.deep-dive .deep-dive-content pre {
+    background: #07070d;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    overflow-x: auto;
+    margin: 0.8rem 0;
+}
+
+details.deep-dive .deep-dive-content pre code {
+    background: none;
+    padding: 0;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+
+/* Injection text — intercepted communication feel */
+details.deep-dive .deep-dive-content .injection-text {
+    background: rgba(208, 88, 88, 0.04);
+    border-left: 3px solid var(--red);
+    padding: 0.9rem 1.1rem;
+    margin: 0.8rem 0;
+    border-radius: 0 6px 6px 0;
+    position: relative;
+}
+
+/* Subtle scan-line gradient overlay on injection text */
+details.deep-dive .deep-dive-content .injection-text::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(208, 88, 88, 0.02) 0%, transparent 100%);
+    pointer-events: none;
+    border-radius: 0 6px 6px 0;
+}
+
+details.deep-dive .deep-dive-content .injection-text p {
+    font-size: 0.84rem;
+    font-style: italic;
+    color: var(--text-dim);
+    position: relative;
+}
+
+details.deep-dive .deep-dive-content .injection-text .injection-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--red);
+    font-style: normal;
+    display: block;
+    margin-bottom: 0.4rem;
+    position: relative;
+}
+
+details.deep-dive .deep-dive-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0;
+}
+
+details.deep-dive .deep-dive-content li {
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+    padding: 0.35rem 0 0.35rem 1.4rem;
+    position: relative;
+}
+
+details.deep-dive .deep-dive-content li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.78rem;
+    width: 5px;
+    height: 5px;
+    background: var(--accent);
+    border-radius: 50%;
+}
+
+details.deep-dive .deep-dive-content li strong {
+    color: var(--text-strong);
+}
+
+details.deep-dive .deep-dive-content li em {
+    color: var(--text-dim);
+    font-style: italic;
+}
+
+details.deep-dive .deep-dive-content strong {
+    color: var(--text-strong);
+}
+
+details.deep-dive .deep-dive-content a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition-fast);
+}
+
+details.deep-dive .deep-dive-content a:hover {
+    border-bottom-color: var(--accent);
+}
+
+details.deep-dive .deep-dive-content .source-note {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-top: 1.2rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--border);
+}
+
+/* ============================================
+   Submission Form (Layer 2)
+   ============================================ */
+.submission-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.8rem 2rem;
+    margin-top: 1.2rem;
+    transition: border-color var(--transition);
+}
+
+.form-group {
+    margin-bottom: 1.3rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-strong);
+    margin-bottom: 0.45rem;
+}
+
+.form-group .required {
+    color: var(--accent);
+    font-weight: 400;
+}
+
+.form-group .optional {
+    color: var(--text-dim);
+    font-weight: 400;
+    font-size: 0.82rem;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.form-group select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238a8aa4' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+    padding-right: 2.4rem;
+    cursor: pointer;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-dim);
+}
+
+/* Checkboxes */
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.3rem 1rem;
+    margin-top: 0.3rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 0.35rem 0;
+    font-weight: 400 !important;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--border-hover);
+    border-radius: 3px;
+    background: var(--bg-subtle);
+    cursor: pointer;
+    flex-shrink: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    position: relative;
+    transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.checkbox-label input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.checkbox-label input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: solid var(--bg);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-label input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.checkbox-label span {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+}
+
+/* Submit button */
+.form-actions {
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.submit-btn {
+    display: inline-block;
+    padding: 0.7rem 2rem;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.submit-btn:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 0 16px var(--accent-glow-strong);
+}
+
+.submit-btn:active {
+    transform: translateY(1px);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.submit-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.submit-btn.submit-error {
+    background: var(--red);
+}
+
+.form-note {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    font-style: italic;
+}
+
+/* Success state */
+.form-success {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.form-success h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+}
+
+.form-success p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 1.5rem;
+    margin-top: 3rem;
+    position: relative;
+}
+
+/* Gradient accent on footer top border */
+footer::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+.footer-content {
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer-about {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 580px;
+    margin: 0 auto 1.2rem;
+}
+
+.footer-about a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition-fast);
+}
+
+.footer-about a:hover {
+    border-bottom-color: var(--accent);
+}
+
+.footer-links {
+    margin-bottom: 1rem;
+}
+
+.footer-links a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.85rem;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition-fast);
+}
+
+.footer-links a:hover {
+    border-bottom-color: var(--accent);
+}
+
+.footer-note {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    max-width: 560px;
+    margin: 0 auto;
+    font-style: italic;
+}
+
+/* ============================================
+   Global Code Styling (outside deep-dive)
+   ============================================ */
+.mechanism-card code,
+.impact-card code,
+.callout code,
+.section-statement code {
+    background: rgba(107, 143, 212, 0.1);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    font-size: 0.82rem;
+    color: var(--accent);
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+/* ============================================
+   Global Link Styling
+   ============================================ */
+.mechanism-card a,
+.impact-card a,
+.evidence-card a,
+.callout a,
+.section-statement a,
+.section-intro a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition-fast);
+}
+
+.mechanism-card a:hover,
+.impact-card a:hover,
+.evidence-card a:hover,
+.callout a:hover,
+.section-statement a:hover {
+    border-bottom-color: var(--accent);
+}
+
+/* ============================================
+   Focus Styles (Accessibility)
+   ============================================ */
+a:focus-visible,
+details.deep-dive summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 600px) {
+    header {
+        padding: 3rem 1rem 2rem;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    main {
+        padding: 0 1rem 2rem;
+    }
+
+    .section {
+        margin-top: 3rem;
+    }
+
+    .experience-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .experience-card::before {
+        font-size: 2.2rem;
+        top: 0.3rem;
+        left: 0.6rem;
+    }
+
+    .mechanism-card,
+    .evidence-card,
+    .impact-card,
+    .ontology-card,
+    .comparison-card,
+    .what-you-can-do {
+        padding: 1.1rem 1.2rem;
+    }
+
+    .comparison-said,
+    .comparison-did {
+        padding: 0.9rem 1.1rem;
+    }
+
+    .trigger-table {
+        font-size: 0.82rem;
+    }
+
+    .trigger-table th,
+    .trigger-table td {
+        padding: 0.5rem 0.6rem;
+    }
+
+    details.deep-dive summary {
+        padding: 0.8rem 1.1rem;
+        font-size: 0.88rem;
+    }
+
+    details.deep-dive .deep-dive-content {
+        padding: 0 1.1rem 1.1rem;
+    }
+
+    details.deep-dive .deep-dive-content pre {
+        padding: 0.8rem;
+    }
+
+    details.deep-dive .deep-dive-content pre code {
+        font-size: 0.72rem;
+    }
+
+    .submission-card {
+        padding: 1.3rem 1.2rem;
+    }
+
+    .checkbox-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .submit-btn {
+        width: 100%;
+    }
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+@media print {
+    body {
+        background: white;
+        color: #1a1a1a;
+    }
+
+    header::before,
+    header::after,
+    footer::before,
+    .timeline::before {
+        display: none;
+    }
+
+    details.deep-dive {
+        border: 1px solid #ccc;
+    }
+
+    details.deep-dive[open] {
+        border-color: #666;
+    }
+
+    .mechanism-card,
+    .evidence-card,
+    .impact-card,
+    .ontology-card,
+    .comparison-card,
+    .what-you-can-do,
+    .experience-card,
+    .submission-card {
+        border: 1px solid #ccc;
+        box-shadow: none;
+    }
+
+    .submission-card {
+        background: #fafafa;
+    }
+
+    a {
+        color: #336;
+    }
+}
